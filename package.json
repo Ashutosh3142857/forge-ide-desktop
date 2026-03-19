@@ -12,14 +12,13 @@
   "scripts": {
     "start": "electron .",
     "dev": "electron . --dev",
-    "build:win": "electron-builder --win --x64 --config electron-builder.yml",
-    "build:mac": "electron-builder --mac --config electron-builder.yml",
-    "build:linux": "electron-builder --linux --config electron-builder.yml",
-    "build:all": "electron-builder --win --mac --linux --config electron-builder.yml",
-    "postinstall": "electron-builder install-app-deps"
+    "build:win": "node build-script.js win",
+    "build:mac": "node build-script.js mac",
+    "build:linux": "node build-script.js linux",
+    "build:all": "node build-script.js all"
   },
   "devDependencies": {
     "electron": "^29.1.0",
-    "electron-builder": "^24.13.3"
+    "@electron/packager": "^18.3.3"
   }
 }
