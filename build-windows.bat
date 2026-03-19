@@ -19,6 +19,8 @@ if %errorlevel% neq 0 goto :error
 
 echo.
 echo Building Windows installer...
+set CSC_IDENTITY_AUTO_DISCOVERY=false
+set WIN_CSC_LINK=
 call npm run build:win
 if %errorlevel% neq 0 goto :error
 
