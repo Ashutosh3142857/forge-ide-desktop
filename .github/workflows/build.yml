@@ -1,0 +1,83 @@
+name: Build & Release Forge IDE
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build (${{ matrix.os }})
+    strategy:
+      matrix:
+        include:
+          - os: windows-latest
+            platform: win
+            artifact: "*.exe"
+          - os: macos-latest
+            platform: mac
+            artifact: "*.dmg"
+          - os: ubuntu-latest
+            platform: linux
+            artifact: "*.AppImage *.deb"
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build (${{ matrix.platform }})
+        run: npm run build:${{ matrix.platform }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CSC_IDENTITY_AUTO_DISCOVERY: false
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: forge-ide-${{ matrix.platform }}
+          path: dist/
+          retention-days: 30
+
+  release:
+    name: Create Release
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts/
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: artifacts/**/*
+          generate_release_notes: true
+          body: |
+            ## Forge IDE ${{ github.ref_name }}
+
+            ### Downloads
+            | Platform | File |
+            |----------|------|
+            | 🪟 Windows | `Forge IDE Setup *.exe` (installer) or `Forge IDE *.exe` (portable) |
+            | 🍎 macOS | `Forge IDE-*.dmg` (Intel + Apple Silicon) |
+            | 🐧 Linux | `Forge IDE-*.AppImage` or `forge-ide_*.deb` |
+
+            ### Install
+            - **Windows:** Run the `.exe` installer or use the portable `.exe`
+            - **macOS:** Open the `.dmg` and drag to Applications
+            - **Linux AppImage:** `chmod +x *.AppImage && ./*.AppImage`
+            - **Linux .deb:** `sudo dpkg -i forge-ide_*.deb`
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="540" height="380">
+  <rect width="540" height="380" fill="#0d0e11"/>
+  <text x="270" y="60" font-family="SF Pro Display,Arial" font-size="32" font-weight="800" fill="#a394e8" text-anchor="middle">Forge IDE</text>
+  <text x="270" y="90" font-family="SF Pro Display,Arial" font-size="14" fill="#555e74" text-anchor="middle">Drag to Applications to install</text>
+  <line x1="270" y1="150" x2="270" y2="320" stroke="#2a2f3d" stroke-width="1" stroke-dasharray="6,4"/>
+</svg>
