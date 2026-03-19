@@ -5,6 +5,9 @@ echo    Forge IDE -- Build Script for Windows
 echo =============================================
 echo.
 
+:: Change to the directory where this bat file lives
+cd /d "%~dp0"
+
 where node >nul 2>nul
 if %errorlevel% neq 0 (
   echo ERROR: Node.js not found.
@@ -21,7 +24,7 @@ echo.
 echo Building Windows installer...
 set CSC_IDENTITY_AUTO_DISCOVERY=false
 set WIN_CSC_LINK=
-call npm run build:win
+call npx electron-builder --win --x64
 if %errorlevel% neq 0 goto :error
 
 echo.
