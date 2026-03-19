@@ -12,20 +12,14 @@ files:
   - renderer/**/*
   - assets/**/*
 
-# Auto-update support (optional - needs update server)
-# publish:
-#   provider: github
-#   owner: forge-ide
-#   repo: forge-ide
-
 win:
   target:
     - target: nsis
       arch: [x64]
-    - target: portable
-      arch: [x64]
   icon: assets/icon.ico
   requestedExecutionLevel: asInvoker
+  signingHashAlgorithms: []
+  sign: null
 
 nsis:
   oneClick: false
@@ -48,18 +42,6 @@ mac:
   hardenedRuntime: false
   gatekeeperAssess: false
 
-dmg:
-  title: "Forge IDE ${version}"
-  background: assets/dmg-bg.png
-  contents:
-    - x: 410
-      y: 150
-      type: link
-      path: /Applications
-    - x: 130
-      y: 150
-      type: file
-
 linux:
   target:
     - target: AppImage
@@ -68,23 +50,8 @@ linux:
       arch: [x64]
   icon: assets/icon.png
   category: Development
-  synopsis: "Cloud Development Environment"
-  description: "Forge IDE — A full-featured cloud IDE built better than Replit. Powered by Autonomy AI."
-  desktop:
-    Name: Forge IDE
-    Comment: Cloud Development Environment
-    Categories: Development;IDE;
-    StartupWMClass: forge-ide
+  maintainer: "Forge IDE <hello@forge.run>"
 
 deb:
-  depends:
-    - libgtk-3-0
-    - libnotify4
-    - libnss3
-    - libxss1
-    - libxtst6
-    - xdg-utils
-    - libatspi2.0-0
-    - libdrm2
-    - libgbm1
-    - libxcb-dri3-0
+  packageCategory: devel
+  priority: optional
