@@ -3572,6 +3572,7 @@ document.addEventListener('keydown', function(e) {
 
 <script>
 // ── COLLABORATION SYSTEM ─────────────────────────────────────
+// Expose all collab functions to window for onclick handlers (contextIsolation compat)
 
 var COLLAB = {
   sessionId: null,
@@ -3766,6 +3767,18 @@ function removeCursor(userId) {
   var el = document.getElementById('cursor-' + userId);
   if (el) el.remove();
 }
+
+// Expose to global scope for inline onclick handlers
+window.openCollabPanel = openCollabPanel;
+window.closeCollabPanel = closeCollabPanel;
+window.openInviteModal = openInviteModal;
+window.closeInviteModal = closeInviteModal;
+window.copyCollabLink = copyCollabLink;
+window.sendInvite = sendInvite;
+window.removeCollaborator = removeCollaborator;
+window.cancelInvite = cancelInvite;
+window.selectAIProvider = selectAIProvider;
+window.onAIModelChange = onAIModelChange;
 
 // Init on load
 collabInit();
