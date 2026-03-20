@@ -466,12 +466,12 @@ input,textarea,select{font-family:var(--ui);background:none;color:var(--t1);bord
   </div>
 
   <div class="tbr">
-    <div class="avs" id="collab-avs" onclick="openCollabPanel()" style="cursor:pointer" title="Collaboration — click to manage">
-      <div class="av av1" title="You (Ash)">AS</div>
+    <div class="avs" id="collab-avs" onclick="openCollabPanel()" style="cursor:pointer;-webkit-app-region:no-drag" title="Collaboration — click to manage">
+      <div class="av av1" title="You (Ash)" style="-webkit-app-region:no-drag">AS</div>
       <div id="collab-extra" style="display:none"></div>
     </div>
-    <button class="collab-invite-btn" onclick="openInviteModal()" title="Invite collaborators" style="height:26px;padding:0 10px;border-radius:13px;border:1px dashed var(--b2);background:transparent;color:var(--t2);font-size:11px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:4px;margin-right:2px;transition:border-color .15s,color .15s">
-      <span style="font-size:14px;line-height:1">+</span> Invite
+    <button class="collab-invite-btn" onclick="openInviteModal()" title="Invite collaborators" style="-webkit-app-region:no-drag;height:26px;padding:0 10px;border-radius:13px;border:1px dashed var(--b2);background:transparent;color:var(--t2);font-size:11px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:4px;margin-right:2px;transition:border-color .15s,color .15s">
+      <span style="font-size:14px;line-height:1;-webkit-app-region:no-drag">+</span> Invite
     </button>
     <button class="btn-run" onclick="runFile()">
       <svg viewBox="0 0 16 16" fill="currentColor"><path d="M3 2l10 6-10 6V2z"/></svg>
@@ -3062,9 +3062,20 @@ setTimeout(updateMM, 200);
   // Windows: frameless titlebar drag
   if (platform === 'win32') {
     document.getElementById('topbar').style.webkitAppRegion = 'drag';
-    document.querySelectorAll('#menu-bar button, .proj-pill, .tbr, .tbr *').forEach(function(el) {
-      el.style.webkitAppRegion = 'no-drag';
-    });
+    function applyNoDrag() {
+      document.querySelectorAll('#menu-bar button, .proj-pill, .tbr, .tbr *, #collab-avs, #collab-avs *, .collab-invite-btn, .collab-invite-btn *').forEach(function(el) {
+        el.style.webkitAppRegion = 'no-drag';
+      });
+    }
+    applyNoDrag();
+    // Re-apply after collab avatars update dynamically
+    var origRenderAvs = window.renderCollabAvatars;
+    setTimeout(function() {
+      if (window.renderCollabAvatars) {
+        var orig = window.renderCollabAvatars;
+        window.renderCollabAvatars = function() { orig(); applyNoDrag(); };
+      }
+    }, 500);
   }
 
   // Show system info in status bar
