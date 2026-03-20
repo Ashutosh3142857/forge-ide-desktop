@@ -1,207 +1,79 @@
-# Forge IDE — Desktop Application
+<div align="center">
 
-**A full cloud IDE built better than Replit. Powered by Autonomy AI.**
+<img src="assets/icon.png" width="120" height="120" alt="Forge IDE">
+
+# Forge IDE
+
+### A full cloud IDE built better than Replit.
+**Powered by Autonomy AI** — Native desktop app for Windows, macOS & Linux.
+
+[![Version](https://img.shields.io/badge/version-1.0.0-7c6af7?style=flat-square)](https://github.com/Ashutosh3142857/forge-ide-desktop/releases)
+[![License](https://img.shields.io/badge/license-MIT-3fb950?style=flat-square)](LICENSE)
+[![Node](https://img.shields.io/badge/requires-Node.js%20v18+-5a9cf8?style=flat-square)](https://nodejs.org)
+[![Build](https://img.shields.io/badge/CI-GitHub%20Actions-d29922?style=flat-square)](https://github.com/Ashutosh3142857/forge-ide-desktop/actions)
+
+**[📦 Installation Guide](INSTALL.md)** · **[🐛 Issues](https://github.com/Ashutosh3142857/forge-ide-desktop/issues)** · **[⭐ Star](https://github.com/Ashutosh3142857/forge-ide-desktop)**
+
+</div>
 
 ---
 
-## 🚀 Quick Start (Build Your Own Installer)
+## 🚀 Quick Start
 
-### Requirements
-- **Node.js v18 or later** — https://nodejs.org
-- **npm** (comes with Node.js)
-- ~2 GB disk space for build tools
-
----
-
-## 🪟 Windows
-
-### Option A — Run the batch file (easiest)
-```
-Double-click: build-windows.bat
-```
-This installs dependencies and builds `dist/Forge IDE Setup 1.0.0.exe` (installer) and `dist/Forge IDE 1.0.0.exe` (portable).
-
-### Option B — Manual
-```cmd
+```bash
+git clone https://github.com/Ashutosh3142857/forge-ide-desktop.git
+cd forge-ide-desktop
 npm install
-npm run build:win
+node build-script.js win    # or: mac / linux
 ```
 
-**Output:** `dist/Forge IDE Setup 1.0.0.exe` — standard NSIS installer with Start Menu + Desktop shortcut
+> Full installation instructions for all platforms → **[INSTALL.md](INSTALL.md)**
 
 ---
 
-## 🍎 macOS
+## ✨ Features
 
-```bash
-chmod +x build.sh
-./build.sh mac
-```
-Or manually:
-```bash
-npm install
-npm run build:mac
-```
-
-**Output:** `dist/Forge IDE-1.0.0.dmg` — drag-to-Applications DMG for Intel + Apple Silicon (universal)
-
-> **Note:** On macOS you may need to right-click → Open the first time (Gatekeeper). To sign properly, set up an Apple Developer certificate and add `CSC_LINK` / `CSC_KEY_PASSWORD` env vars.
-
----
-
-## 🐧 Linux
-
-```bash
-chmod +x build.sh
-./build.sh linux
-```
-Or manually:
-```bash
-npm install
-npm run build:linux
-```
-
-**Output:**
-- `dist/Forge IDE-1.0.0.AppImage` — portable, runs on any x64 Linux (Ubuntu 18+, Fedora, Arch, etc.)
-- `dist/forge-ide_1.0.0_amd64.deb` — Debian/Ubuntu package
-
-```bash
-# Run AppImage
-chmod +x "Forge IDE-1.0.0.AppImage"
-./"Forge IDE-1.0.0.AppImage"
-
-# Install .deb
-sudo dpkg -i forge-ide_1.0.0_amd64.deb
-```
-
----
-
-## 🌍 Build All Platforms at Once
-
-```bash
-npm install
-npm run build:all
-```
-
-> Cross-platform building works best on macOS (can build all three). Windows can build Win only. Linux can build Linux only. Use GitHub Actions for automated multi-platform builds (see CI section below).
-
----
-
-## 📁 Project Structure
-
-```
-forge-ide-desktop/
-├── main.js              ← Electron main process (window, menus, native dialogs)
-├── preload.js           ← Secure IPC bridge (renderer ↔ Node.js)
-├── package.json         ← Build config + electron-builder settings
-├── build.sh             ← Unix build script
-├── build-windows.bat    ← Windows build script
-├── renderer/
-│   └── index.html       ← The entire IDE (HTML/CSS/JS, ~185KB)
-└── assets/
-    ├── icon.png          ← Linux icon (256×256)
-    ├── icon.ico          ← Windows icon (multi-size ICO)
-    ├── icon.icns         ← macOS icon
-    └── icon.svg          ← Source vector icon
-```
-
----
-
-## ⚙️ What's Included
-
-### IDE Features
-- **Code Editor** — syntax highlighting, line numbers, minimap, tab completion
-- **File Tree** — create, rename, delete, open real files from disk
-- **Tabs** — multi-file editing
+- **Code Editor** — syntax highlighting, minimap, tab completion, line numbers
+- **File Tree** — create, rename, delete, open real files from disk  
 - **Terminal** — interactive terminal with 15+ commands
-- **Search** — search across all files with replace-all
-- **Git / GitHub** — staging, commits, push, PR management, Issues, Actions
-- **AI Panel** — Forge AI (Autonomy AI) with code context
-- **11 Cloud Deploy Targets** — Forge Cloud, AWS, GCP, Azure, Railway, Render, Fly.io, DigitalOcean, Heroku, Vercel, Docker
-- **PyPI Package Registry** — 80+ packages, search + install
-- **IDE Extensions** — 12 extensions, install/uninstall
-- **Settings Panel** — font size, theme, keybindings, AI model, terminal config
-- **Command Palette** — 45 commands, keyboard shortcut driven
-
-### Native Desktop Extras (beyond the browser version)
-- **Native file open/save dialogs** — real OS file picker
-- **Open any folder** from disk into the IDE
-- **Auto-save to disk** — saves modified files to their real path every 30s
-- **Native menus** — full app menu with keyboard shortcuts on all platforms
-- **macOS traffic lights** — proper titlebar integration
-- **Windows taskbar** — proper app icon + jumplist
-- **System info** — shows platform, RAM, CPU in status bar
-- **About dialog** — native OS about box
+- **Forge AI** — AI panel powered by Autonomy AI with code context
+- **Build** — one-click package for Windows, macOS, Linux (no signing required)
+- **Deploy** — 11 cloud targets: Forge Cloud, AWS, GCP, Azure, Railway, Render, Fly.io, DigitalOcean, Heroku, Vercel, Docker
+- **Collaboration** — real-time multi-user editing with live cursors + invite system
+- **LLM Settings** — choose from 6 AI providers: Anthropic, OpenAI, Google, Mistral, Meta/Groq, Cohere
+- **Extensions** — 12 IDE extensions, install/uninstall
+- **Command Palette** — 45 commands, keyboard-driven
+- **Git Panel** — staging, commits, push, PR management, Issues, Actions
 
 ---
 
-## 🔧 GitHub Actions CI (Automated Multi-Platform Builds)
+## 📦 Build
 
-Create `.github/workflows/build.yml`:
+| Platform | Command | Output |
+|---|---|---|
+| 🪟 Windows | `node build-script.js win` | `dist/Forge IDE-win32-x64/Forge IDE.exe` |
+| 🍎 macOS | `node build-script.js mac` | `dist/Forge IDE-darwin-x64/Forge IDE.app` |
+| 🐧 Linux | `node build-script.js linux` | `dist/Forge IDE-linux-x64/Forge IDE` |
 
-```yaml
-name: Build Forge IDE
-
-on:
-  push:
-    tags: ['v*']
-
-jobs:
-  build:
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-    runs-on: ${{ matrix.os }}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - run: npm install
-      - run: npm run build:all
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - uses: actions/upload-artifact@v4
-        with:
-          name: dist-${{ matrix.os }}
-          path: dist/
-```
-
-This automatically builds installers for all 3 platforms on every tagged release and uploads them to GitHub Releases.
+No code signing. No admin rights. No extra tools. **Just Node.js v18+.**
 
 ---
 
-## 🛠 Development Mode
+## 🤖 AI Providers
 
-```bash
-npm install
-npm start              # Launch in development mode
-npm start -- --dev     # Launch with DevTools open
-```
+Configure your preferred LLM in **Settings → AI / Autonomy**:
 
----
-
-## 📦 Customization
-
-### Change the app name/branding
-Edit `package.json`:
-```json
-{
-  "productName": "Your IDE Name",
-  "build": {
-    "appId": "com.yourcompany.youride"
-  }
-}
-```
-
-### Change AI backend
-In `renderer/index.html`, find `ST.aiModel` and update the API endpoint / model string.
-
-### Add auto-update
-Install `electron-updater` and add update checking in `main.js`. Pair with GitHub Releases for automatic update distribution.
+| Provider | Models |
+|---|---|
+| 🟣 Anthropic | Claude Opus 4.5, Sonnet 4.5, Haiku 4.5 |
+| 🟢 OpenAI | GPT-4o, o1, o3-mini |
+| 🔵 Google | Gemini 2.0 Flash, 1.5 Pro |
+| 🟠 Mistral | Large, Codestral, Mixtral |
+| 🦙 Meta/Groq | Llama 3.3 70B, Llama 3.1 8B (free) |
+| 🔴 Cohere | Command R+ |
 
 ---
 
 ## 📄 License
 
-MIT © 2026 Forge IDE
+MIT © 2026 Forge IDE — Built with ❤️ by [Autonomy AI](https://autonomy.org.in)
