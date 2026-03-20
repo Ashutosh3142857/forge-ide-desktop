@@ -114,6 +114,56 @@
   .progress-bar-wrap { background: var(--bg); border-radius: 4px; height: 6px; overflow: hidden; margin-bottom: 16px; }
   .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 4px; transition: width 0.4s ease; }
   .progress-status { font-size: 12px; color: var(--text-dim); }
+
+  /* Settings modal */
+  #settings-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.65); z-index: 200; align-items: center; justify-content: center; }
+  #settings-modal.open { display: flex; }
+  .settings-box { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; width: 560px; max-height: 90vh; overflow: hidden; display: flex; flex-direction: column; }
+  .settings-header { padding: 20px 24px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+  .settings-header h2 { font-size: 15px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+  .settings-close { background: none; border: none; color: var(--text-dim); cursor: pointer; font-size: 18px; line-height: 1; padding: 2px 6px; border-radius: 4px; }
+  .settings-close:hover { background: var(--border); color: var(--text); }
+  .settings-body { padding: 20px 24px; overflow-y: auto; display: flex; flex-direction: column; gap: 24px; }
+  .settings-section { display: flex; flex-direction: column; gap: 12px; }
+  .settings-section-title { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--text-dim); padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+  .settings-row { display: flex; flex-direction: column; gap: 6px; }
+  .settings-label { font-size: 12px; font-weight: 600; color: var(--text); display: flex; align-items: center; gap: 6px; }
+  .settings-label .badge { font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 10px; }
+  .badge-free { background: rgba(63,185,80,0.15); color: var(--green); border: 1px solid rgba(63,185,80,0.3); }
+  .badge-paid { background: rgba(124,106,247,0.15); color: var(--accent); border: 1px solid rgba(124,106,247,0.3); }
+  .settings-desc { font-size: 11px; color: var(--text-dim); line-height: 1.5; }
+  .provider-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .provider-card { background: var(--bg); border: 1.5px solid var(--border); border-radius: 10px; padding: 12px 10px; cursor: pointer; text-align: center; transition: all 0.15s; position: relative; }
+  .provider-card:hover { border-color: var(--accent); }
+  .provider-card.selected { border-color: var(--accent); background: rgba(124,106,247,0.08); }
+  .provider-card .pv-logo { font-size: 22px; margin-bottom: 6px; }
+  .provider-card .pv-name { font-size: 12px; font-weight: 700; }
+  .provider-card .pv-sub { font-size: 10px; color: var(--text-dim); margin-top: 2px; }
+  .provider-card .pv-check { position: absolute; top: 6px; right: 6px; color: var(--accent); font-size: 12px; display: none; }
+  .provider-card.selected .pv-check { display: block; }
+  .model-select { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; color: var(--text); padding: 9px 12px; font-size: 13px; outline: none; cursor: pointer; }
+  .model-select:focus { border-color: var(--accent); }
+  .model-select option { background: var(--surface); }
+  .api-key-wrap { position: relative; }
+  .api-key-input { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; color: var(--text); padding: 9px 40px 9px 12px; font-size: 13px; font-family: monospace; outline: none; }
+  .api-key-input:focus { border-color: var(--accent); }
+  .api-key-input.valid { border-color: var(--green); }
+  .api-key-input.invalid { border-color: var(--red); }
+  .api-key-toggle { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-dim); cursor: pointer; font-size: 14px; }
+  .api-key-toggle:hover { color: var(--text); }
+  .api-status { font-size: 11px; display: flex; align-items: center; gap: 5px; margin-top: 2px; }
+  .api-status.ok { color: var(--green); }
+  .api-status.err { color: var(--red); }
+  .api-status.idle { color: var(--text-dim); }
+  .model-info-card { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; display: flex; flex-direction: column; gap: 6px; }
+  .model-info-row { display: flex; justify-content: space-between; align-items: center; font-size: 12px; }
+  .model-info-row .mik { color: var(--text-dim); }
+  .model-info-row .miv { color: var(--text); font-weight: 600; }
+  .settings-footer { padding: 14px 24px; border-top: 1px solid var(--border); display: flex; gap: 10px; justify-content: space-between; align-items: center; flex-shrink: 0; }
+  .settings-footer .current-model { font-size: 12px; color: var(--text-dim); }
+  .settings-footer .current-model strong { color: var(--text); }
+  .btn-settings { background: var(--surface); border: 1px solid var(--border); color: var(--text); padding: 4px 10px; font-size: 12px; }
+  .btn-settings:hover { border-color: var(--accent); }
 </style>
 </head>
 <body>
@@ -129,6 +179,7 @@
     <button class="btn btn-run" onclick="runCode()">▶ Run</button>
     <button class="btn btn-build" onclick="openBuildModal()">⚙ Build</button>
     <button class="btn btn-deploy" onclick="termPrint('Deploy feature coming soon!', 'info')">🚀 Deploy</button>
+    <button class="btn btn-settings" onclick="openSettings()" title="AI Model & Settings">⚙ Settings</button>
   </div>
 </div>
 
@@ -530,6 +581,338 @@ renderSidebar();
 // Auto-open welcome.md and hello.js on launch
 openFile('welcome.md');
 openFile('hello.js');
+</script>
+
+<!-- ── Settings Modal ─────────────────────────────────────── -->
+<div id="settings-modal">
+  <div class="settings-box">
+    <div class="settings-header">
+      <h2>⚙ Settings — AI Model</h2>
+      <button class="settings-close" onclick="closeSettings()">✕</button>
+    </div>
+
+    <div class="settings-body">
+
+      <!-- Provider -->
+      <div class="settings-section">
+        <div class="settings-section-title">AI Provider</div>
+        <div class="settings-row">
+          <div class="settings-label">Select your AI provider</div>
+          <div class="settings-desc">Forge AI will use this provider for code completions, explanations, and the AI chat panel.</div>
+        </div>
+        <div class="provider-grid" id="provider-grid">
+          <div class="provider-card selected" data-provider="anthropic" onclick="selectProvider('anthropic')">
+            <div class="pv-check">✓</div>
+            <div class="pv-logo">🟣</div>
+            <div class="pv-name">Anthropic</div>
+            <div class="pv-sub">Claude models</div>
+          </div>
+          <div class="provider-card" data-provider="openai" onclick="selectProvider('openai')">
+            <div class="pv-check">✓</div>
+            <div class="pv-logo">🟢</div>
+            <div class="pv-name">OpenAI</div>
+            <div class="pv-sub">GPT-4o, o1, o3</div>
+          </div>
+          <div class="provider-card" data-provider="google" onclick="selectProvider('google')">
+            <div class="pv-check">✓</div>
+            <div class="pv-logo">🔵</div>
+            <div class="pv-name">Google</div>
+            <div class="pv-sub">Gemini models</div>
+          </div>
+          <div class="provider-card" data-provider="mistral" onclick="selectProvider('mistral')">
+            <div class="pv-check">✓</div>
+            <div class="pv-logo">🟠</div>
+            <div class="pv-name">Mistral</div>
+            <div class="pv-sub">Mistral, Mixtral</div>
+          </div>
+          <div class="provider-card" data-provider="meta" onclick="selectProvider('meta')">
+            <div class="pv-check">✓</div>
+            <div class="pv-logo">🦙</div>
+            <div class="pv-name">Meta (Llama)</div>
+            <div class="pv-sub">via Groq / Together</div>
+          </div>
+          <div class="provider-card" data-provider="cohere" onclick="selectProvider('cohere')">
+            <div class="pv-check">✓</div>
+            <div class="pv-logo">🔴</div>
+            <div class="pv-name">Cohere</div>
+            <div class="pv-sub">Command R+</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Model variant -->
+      <div class="settings-section">
+        <div class="settings-section-title">Model Variant</div>
+        <div class="settings-row">
+          <div class="settings-label">Choose model <span class="badge badge-paid" id="model-tier-badge">Paid</span></div>
+          <div class="settings-desc" id="model-desc">Select the specific model variant. More capable models may use more tokens.</div>
+        </div>
+        <select class="model-select" id="model-select" onchange="onModelChange()"></select>
+        <div class="model-info-card" id="model-info-card">
+          <div class="model-info-row"><span class="mik">Context window</span><span class="miv" id="minfo-ctx">—</span></div>
+          <div class="model-info-row"><span class="mik">Best for</span><span class="miv" id="minfo-use">—</span></div>
+          <div class="model-info-row"><span class="mik">Speed</span><span class="miv" id="minfo-speed">—</span></div>
+          <div class="model-info-row"><span class="mik">Cost</span><span class="miv" id="minfo-cost">—</span></div>
+        </div>
+      </div>
+
+      <!-- API Key -->
+      <div class="settings-section">
+        <div class="settings-section-title">API Key</div>
+        <div class="settings-row">
+          <div class="settings-label">Your API Key</div>
+          <div class="settings-desc" id="api-key-desc">Stored locally in your app. Never sent anywhere except the provider's API.</div>
+        </div>
+        <div class="api-key-wrap">
+          <input class="api-key-input" type="password" id="api-key-input"
+            placeholder="Paste your API key here…"
+            oninput="onApiKeyInput()"
+            autocomplete="off" spellcheck="false">
+          <button class="api-key-toggle" onclick="toggleApiKeyVisibility()" id="api-key-toggle-btn" title="Show/hide">👁</button>
+        </div>
+        <div class="api-status idle" id="api-status">
+          <span>○</span><span id="api-status-text">No key entered</span>
+        </div>
+        <div class="settings-desc" id="api-key-link-desc"></div>
+      </div>
+
+    </div>
+
+    <div class="settings-footer">
+      <div class="current-model">Active: <strong id="footer-model-label">Claude — claude-sonnet-4-5</strong></div>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-secondary" onclick="closeSettings()">Cancel</button>
+        <button class="btn btn-primary" onclick="saveSettings()">Save Settings</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── LLM Settings ─────────────────────────────────────────────
+
+const PROVIDERS = {
+  anthropic: {
+    name: 'Anthropic',
+    keyPrefix: 'sk-ant-',
+    keyPlaceholder: 'sk-ant-api03-…',
+    keyLink: 'Get your key at <a href="#" style="color:var(--accent)">console.anthropic.com</a>',
+    models: [
+      { id: 'claude-opus-4-5',    label: 'Claude Opus 4.5',    tier: 'Paid',  ctx: '200K tokens', use: 'Complex reasoning, research', speed: 'Slow',   cost: '$$$$' },
+      { id: 'claude-sonnet-4-5',  label: 'Claude Sonnet 4.5',  tier: 'Paid',  ctx: '200K tokens', use: 'Balanced power & speed',     speed: 'Fast',   cost: '$$$' },
+      { id: 'claude-haiku-4-5',   label: 'Claude Haiku 4.5',   tier: 'Paid',  ctx: '200K tokens', use: 'Fast tasks, autocomplete',   speed: 'Fastest',cost: '$' },
+      { id: 'claude-opus-4-0',    label: 'Claude Opus 4',      tier: 'Paid',  ctx: '200K tokens', use: 'Flagship reasoning',         speed: 'Slow',   cost: '$$$$' },
+      { id: 'claude-sonnet-4-0',  label: 'Claude Sonnet 4',    tier: 'Paid',  ctx: '200K tokens', use: 'General purpose',            speed: 'Fast',   cost: '$$$' },
+    ]
+  },
+  openai: {
+    name: 'OpenAI',
+    keyPrefix: 'sk-',
+    keyPlaceholder: 'sk-proj-…',
+    keyLink: 'Get your key at <a href="#" style="color:var(--accent)">platform.openai.com</a>',
+    models: [
+      { id: 'gpt-4o',         label: 'GPT-4o',          tier: 'Paid',  ctx: '128K tokens', use: 'Best multimodal model',      speed: 'Fast',   cost: '$$$' },
+      { id: 'gpt-4o-mini',    label: 'GPT-4o Mini',     tier: 'Paid',  ctx: '128K tokens', use: 'Fast & cheap tasks',         speed: 'Fastest',cost: '$' },
+      { id: 'o1',             label: 'o1',               tier: 'Paid',  ctx: '200K tokens', use: 'Advanced reasoning',         speed: 'Slow',   cost: '$$$$' },
+      { id: 'o1-mini',        label: 'o1 Mini',          tier: 'Paid',  ctx: '128K tokens', use: 'STEM reasoning, coding',     speed: 'Medium', cost: '$$' },
+      { id: 'o3-mini',        label: 'o3 Mini',          tier: 'Paid',  ctx: '200K tokens', use: 'Efficient reasoning',        speed: 'Fast',   cost: '$$' },
+      { id: 'gpt-3.5-turbo',  label: 'GPT-3.5 Turbo',   tier: 'Paid',  ctx: '16K tokens',  use: 'Legacy, fast & cheap',       speed: 'Fastest',cost: '$' },
+    ]
+  },
+  google: {
+    name: 'Google',
+    keyPrefix: 'AIza',
+    keyPlaceholder: 'AIzaSy…',
+    keyLink: 'Get your key at <a href="#" style="color:var(--accent)">aistudio.google.com</a>',
+    models: [
+      { id: 'gemini-2.0-flash',       label: 'Gemini 2.0 Flash',       tier: 'Free', ctx: '1M tokens',  use: 'Fast multimodal tasks',     speed: 'Fastest',cost: 'Free' },
+      { id: 'gemini-2.0-flash-thinking', label: 'Gemini 2.0 Flash Thinking', tier: 'Free', ctx: '1M tokens', use: 'Step-by-step reasoning', speed: 'Medium', cost: 'Free' },
+      { id: 'gemini-1.5-pro',         label: 'Gemini 1.5 Pro',         tier: 'Paid', ctx: '2M tokens',  use: 'Long context tasks',        speed: 'Medium', cost: '$$$' },
+      { id: 'gemini-1.5-flash',       label: 'Gemini 1.5 Flash',       tier: 'Free', ctx: '1M tokens',  use: 'General purpose, free',     speed: 'Fast',   cost: 'Free' },
+      { id: 'gemini-1.5-flash-8b',    label: 'Gemini 1.5 Flash-8B',    tier: 'Free', ctx: '1M tokens',  use: 'Lightweight tasks',         speed: 'Fastest',cost: 'Free' },
+    ]
+  },
+  mistral: {
+    name: 'Mistral',
+    keyPrefix: '',
+    keyPlaceholder: 'your-mistral-api-key',
+    keyLink: 'Get your key at <a href="#" style="color:var(--accent)">console.mistral.ai</a>',
+    models: [
+      { id: 'mistral-large-latest',  label: 'Mistral Large',   tier: 'Paid', ctx: '128K tokens', use: 'Complex reasoning',         speed: 'Medium', cost: '$$$' },
+      { id: 'mistral-small-latest',  label: 'Mistral Small',   tier: 'Paid', ctx: '32K tokens',  use: 'Efficient general tasks',   speed: 'Fast',   cost: '$' },
+      { id: 'codestral-latest',      label: 'Codestral',       tier: 'Paid', ctx: '32K tokens',  use: 'Code generation & fill',    speed: 'Fast',   cost: '$$' },
+      { id: 'mixtral-8x7b-instruct', label: 'Mixtral 8x7B',    tier: 'Paid', ctx: '32K tokens',  use: 'Open-weight, powerful',     speed: 'Medium', cost: '$$' },
+      { id: 'mistral-nemo',          label: 'Mistral Nemo',    tier: 'Paid', ctx: '128K tokens', use: 'Multilingual tasks',         speed: 'Fast',   cost: '$' },
+    ]
+  },
+  meta: {
+    name: 'Meta (Llama via Groq)',
+    keyPrefix: 'gsk_',
+    keyPlaceholder: 'gsk_… (Groq API key)',
+    keyLink: 'Get your Groq key at <a href="#" style="color:var(--accent)">console.groq.com</a>',
+    models: [
+      { id: 'llama-3.3-70b-versatile',   label: 'Llama 3.3 70B',       tier: 'Free', ctx: '128K tokens', use: 'Best open model',           speed: 'Fast',   cost: 'Free' },
+      { id: 'llama-3.1-8b-instant',      label: 'Llama 3.1 8B Instant', tier: 'Free', ctx: '128K tokens', use: 'Blazing fast tasks',        speed: 'Fastest',cost: 'Free' },
+      { id: 'llama3-70b-8192',           label: 'Llama 3 70B',          tier: 'Free', ctx: '8K tokens',   use: 'Powerful open-weight',      speed: 'Fast',   cost: 'Free' },
+      { id: 'llama3-8b-8192',            label: 'Llama 3 8B',           tier: 'Free', ctx: '8K tokens',   use: 'Lightweight tasks',         speed: 'Fastest',cost: 'Free' },
+      { id: 'mixtral-8x7b-32768',        label: 'Mixtral 8x7B (Groq)',  tier: 'Free', ctx: '32K tokens',  use: 'Strong reasoning, free',    speed: 'Fast',   cost: 'Free' },
+    ]
+  },
+  cohere: {
+    name: 'Cohere',
+    keyPrefix: '',
+    keyPlaceholder: 'your-cohere-api-key',
+    keyLink: 'Get your key at <a href="#" style="color:var(--accent)">dashboard.cohere.com</a>',
+    models: [
+      { id: 'command-r-plus-08-2024', label: 'Command R+ (Aug 2024)',  tier: 'Paid', ctx: '128K tokens', use: 'RAG, agents, complex tasks', speed: 'Medium', cost: '$$$' },
+      { id: 'command-r-08-2024',      label: 'Command R (Aug 2024)',   tier: 'Paid', ctx: '128K tokens', use: 'Balanced RAG tasks',         speed: 'Fast',   cost: '$$' },
+      { id: 'command-r-plus',         label: 'Command R+',             tier: 'Paid', ctx: '128K tokens', use: 'Flagship reasoning',         speed: 'Medium', cost: '$$$' },
+      { id: 'command-r',              label: 'Command R',              tier: 'Paid', ctx: '128K tokens', use: 'General purpose',            speed: 'Fast',   cost: '$$' },
+      { id: 'command-light',          label: 'Command Light',          tier: 'Paid', ctx: '4K tokens',   use: 'Fast lightweight tasks',     speed: 'Fastest',cost: '$' },
+    ]
+  }
+};
+
+// State
+let ST = {
+  provider: 'anthropic',
+  model: 'claude-sonnet-4-5',
+  apiKey: '',
+  keyVisible: false
+};
+
+function openSettings() {
+  renderProviderGrid();
+  renderModelSelect();
+  updateModelInfo();
+  updateApiKeyField();
+  updateFooterLabel();
+  document.getElementById('settings-modal').classList.add('open');
+}
+
+function closeSettings() {
+  document.getElementById('settings-modal').classList.remove('open');
+}
+
+function selectProvider(id) {
+  ST.provider = id;
+  // default to first model of provider
+  ST.model = PROVIDERS[id].models[0].id;
+  renderProviderGrid();
+  renderModelSelect();
+  updateModelInfo();
+  updateApiKeyField();
+}
+
+function renderProviderGrid() {
+  document.querySelectorAll('.provider-card').forEach(card => {
+    card.classList.toggle('selected', card.dataset.provider === ST.provider);
+  });
+}
+
+function renderModelSelect() {
+  const sel = document.getElementById('model-select');
+  const models = PROVIDERS[ST.provider].models;
+  sel.innerHTML = models.map(m =>
+    `<option value="${m.id}" ${m.id === ST.model ? 'selected' : ''}>${m.label}</option>`
+  ).join('');
+}
+
+function onModelChange() {
+  ST.model = document.getElementById('model-select').value;
+  updateModelInfo();
+  updateFooterLabel();
+}
+
+function updateModelInfo() {
+  const models = PROVIDERS[ST.provider].models;
+  const m = models.find(x => x.id === ST.model) || models[0];
+  document.getElementById('minfo-ctx').textContent   = m.ctx;
+  document.getElementById('minfo-use').textContent   = m.use;
+  document.getElementById('minfo-speed').textContent = m.speed;
+  document.getElementById('minfo-cost').textContent  = m.cost;
+  const badge = document.getElementById('model-tier-badge');
+  badge.textContent = m.tier;
+  badge.className = 'badge ' + (m.tier === 'Free' ? 'badge-free' : 'badge-paid');
+}
+
+function updateApiKeyField() {
+  const prov = PROVIDERS[ST.provider];
+  const input = document.getElementById('api-key-input');
+  input.placeholder = prov.keyPlaceholder;
+  input.value = ST.apiKey;
+  document.getElementById('api-key-link-desc').innerHTML = prov.keyLink;
+  validateApiKey(ST.apiKey);
+}
+
+function onApiKeyInput() {
+  ST.apiKey = document.getElementById('api-key-input').value;
+  validateApiKey(ST.apiKey);
+}
+
+function validateApiKey(key) {
+  const input = document.getElementById('api-key-input');
+  const statusEl = document.getElementById('api-status');
+  const statusText = document.getElementById('api-status-text');
+  const prefix = PROVIDERS[ST.provider].keyPrefix;
+
+  input.className = 'api-key-input';
+  statusEl.className = 'api-status';
+
+  if (!key) {
+    statusEl.classList.add('idle');
+    statusText.textContent = 'No key entered';
+    return;
+  }
+  if (key.length < 20) {
+    input.classList.add('invalid');
+    statusEl.classList.add('err');
+    statusText.textContent = 'Key looks too short';
+    return;
+  }
+  if (prefix && !key.startsWith(prefix)) {
+    input.classList.add('invalid');
+    statusEl.classList.add('err');
+    statusText.textContent = `Expected key starting with "${prefix}…"`;
+    return;
+  }
+  input.classList.add('valid');
+  statusEl.classList.add('ok');
+  statusText.textContent = '✓ Key format looks valid — will be used on next AI request';
+}
+
+function toggleApiKeyVisibility() {
+  ST.keyVisible = !ST.keyVisible;
+  const input = document.getElementById('api-key-input');
+  input.type = ST.keyVisible ? 'text' : 'password';
+  document.getElementById('api-key-toggle-btn').textContent = ST.keyVisible ? '🙈' : '👁';
+}
+
+function updateFooterLabel() {
+  const prov = PROVIDERS[ST.provider];
+  const models = prov.models;
+  const m = models.find(x => x.id === ST.model) || models[0];
+  document.getElementById('footer-model-label').textContent = `${prov.name} — ${m.label}`;
+}
+
+function saveSettings() {
+  ST.model = document.getElementById('model-select').value;
+  ST.apiKey = document.getElementById('api-key-input').value;
+
+  // Update status bar
+  const prov = PROVIDERS[ST.provider];
+  const m = prov.models.find(x => x.id === ST.model) || prov.models[0];
+  document.querySelector('#statusbar .right span:nth-child(2)').textContent =
+    `● ${prov.name}: ${m.label}`;
+
+  termPrint(`✓ AI settings saved — ${prov.name} / ${m.label}${ST.apiKey ? ' (API key set)' : ' (no key)'}`, 'success');
+  closeSettings();
+}
+
+// Close on backdrop click
+document.getElementById('settings-modal').addEventListener('click', function(e) {
+  if (e.target === this) closeSettings();
+});
 </script>
 </body>
 </html>
