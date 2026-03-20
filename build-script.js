@@ -23,6 +23,14 @@ function build(p) {
   const cfg = platformMap[p];
   if (!cfg) return;
   console.log('\n▶ Building for', p, '...');
+
+  // Delete old dist output to force full icon refresh
+  const outDir = path.join('dist', `Forge IDE-${cfg.platform}-${cfg.arch}`);
+  if (fs.existsSync(outDir)) {
+    fs.rmSync(outDir, { recursive: true, force: true });
+    console.log('  Cleaned old dist:', outDir);
+  }
+
   const cmd = [
     'npx @electron/packager .',
     '"Forge IDE"',
